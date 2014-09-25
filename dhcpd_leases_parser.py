@@ -1,5 +1,6 @@
-# Based on:
+# 
 # dhcpd_leases_parser.py
+# http://pyparsing.wikispaces.com/file/detail/dhcpd_leases_parser.py
 #
 # Copyright 2008, Paul McGuire
 #
@@ -80,12 +81,3 @@ leaseStatement = startsStmt | endsStmt | tstpStmt | tsfpStmt | hdwStmt | \
                                                         uidStmt | bindingStmt
 leaseDef = "lease" + ipAddress("ipaddress") + LBRACE + \
                             Dict(ZeroOrMore(Group(leaseStatement))) + RBRACE
-
-
-# Addition by Matthew Woolstencroft
-def parse(leases_string, mac_addresses):
-    leases = []
-    for lease in leaseDef.searchString(leases_string):
-        if lease.hardware.mac in mac_addresses:
-            leases.append(lease)
-    return leases
